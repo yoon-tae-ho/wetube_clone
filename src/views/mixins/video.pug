@@ -1,6 +1,6 @@
 mixin video(videoObj)
   div
-      h3=videoObj.title
+      a(href=`/videos/${videoObj.id}`)=videoObj.title
       ul
         li #{videoObj.ratings}/5 ratings.
         li #{videoObj.comments} comments.
