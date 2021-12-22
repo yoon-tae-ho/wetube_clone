@@ -11,5 +11,19 @@ const videoSchema = new mongoose.Schema({
   },
 });
 
+const getHashtagArr = (hashtagStr) => {
+  let result = hashtagStr.split(",");
+  result = result.map((word) => {
+    let newWord = word.trim();
+    return newWord.startsWith("#") ? newWord : `#${newWord}`;
+  });
+  return result;
+};
+
+videoSchema.pre("save", async function () {
+  this.hashtags = getHashtagArr(this.hashtags[0]);
+  console.log(this);
+});
+
 const Video = mongoose.model("Video", videoSchema);
 export default Video;

@@ -44,7 +44,7 @@ export const postEdit = async (req, res) => {
     await Video.findByIdAndUpdate(id, {
       title,
       description,
-      hashtags: getHashtagArr(hashtags),
+      hashtags,
     });
     res.redirect(`/videos/${id}`);
   } catch (err) {
@@ -60,11 +60,10 @@ export const getUpload = (req, res) => {
 export const postUpload = async (req, res) => {
   try {
     const { title, description, hashtags } = req.body;
-    const hashtagArr = getHashtagArr(hashtags);
     await Video.create({
       title,
       description,
-      hashtags: hashtagArr,
+      hashtags,
     });
     return res.redirect("/");
   } catch (err) {
@@ -77,24 +76,3 @@ export const postUpload = async (req, res) => {
 };
 
 // etc.
-
-const getHashtagArr = (hashtagStr) => {
-  let result = hashtagStr.split(",");
-  result = result.map((word) => {
-    let i = null;
-    let isHash = false;
-    for (i = 0; i < word.length; ++i) {
-      if (word[i] === " ") {
-        continue;
-      } else if (word[i] === "#") {
-        isHash = true;
-        break;
-      } else {
-        break;
-      }
-    }
-    const newWord = word.slice(i);
-    return isHash === true ? newWord : `#${newWord}`;
-  });
-  return result;
-};
