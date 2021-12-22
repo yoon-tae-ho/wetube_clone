@@ -1,8 +1,6 @@
 mixin video(videoObj)
   div
       a(href=`/videos/${videoObj.id}`)=videoObj.title
-      ul
-        li #{videoObj.ratings}/5 ratings.
-        li #{videoObj.comments} comments.
-        li posted #{videoObj.createdAt}.
-        li #{videoObj.views} views.
+      p=videoObj.description 
+      small=videoObj.createdAt
+      hr
