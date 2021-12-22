@@ -1,4 +1,4 @@
-import Video, { formatHashtags } from "../models/Video";
+import Video from "../models/Video";
 
 // For globalRouters
 
@@ -44,7 +44,7 @@ export const postEdit = async (req, res) => {
     await Video.findByIdAndUpdate(id, {
       title,
       description,
-      hashtags: formatHashtags(hashtags),
+      hashtags: Video.formatHashtags(hashtags),
     });
     res.redirect(`/videos/${id}`);
   } catch (err) {
@@ -63,7 +63,7 @@ export const postUpload = async (req, res) => {
     await Video.create({
       title,
       description,
-      hashtags: formatHashtags(hashtags),
+      hashtags: Video.formatHashtags(hashtags),
     });
     return res.redirect("/");
   } catch (err) {
