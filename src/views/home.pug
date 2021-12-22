@@ -1,11 +1,8 @@
 extends base.pug
 include mixins/video.pug
 
-block headerNav 
-  nav 
-        ul 
-          li 
-            a(href="/videos/upload") Upload Video
+block navList 
+  a(href="/videos/upload") Upload Video
 
 block content
   each video in videos

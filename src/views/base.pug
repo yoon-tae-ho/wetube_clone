@@ -9,7 +9,12 @@ html(lang="ko")
   body 
     header 
       h1=pageTitle 
-      block headerNav
+      nav 
+        ul 
+          li 
+            a(href="/") Home
+          block navList
+            
     main
       block content
     include partials/footer.pug

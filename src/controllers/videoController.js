@@ -1,6 +1,7 @@
 import Video from "../models/Video";
 
 // For globalRouters
+
 export const home = async (req, res) => {
   try {
     const videos = await Video.find({});
@@ -9,28 +10,53 @@ export const home = async (req, res) => {
     console.error(err);
   }
 };
+
 export const search = (req, res) => res.send("Search!");
 
 // For videoRouters
+
 export const watchVideo = async (req, res) => {
-  const { id } = req.params;
-  const video = await Video.findById(id);
-  res.render("watch", { pageTitle: `${video.title}`, video });
+  try {
+    const { id } = req.params;
+    const video = await Video.findById(id);
+    res.render("watch", { pageTitle: `${video.title}`, video });
+  } catch (err) {
+    console.error(err);
+    res.render("404", { pageTitle: "Video not found" });
+  }
 };
-export const getEdit = (req, res) => {
-  const { id } = req.params;
 
-  res.render("edit", { pageTitle: `Editing:` });
+export const getEdit = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const video = await Video.findById(id);
+    res.render("edit", { pageTitle: `Editing: ${video.title}`, video });
+  } catch (err) {
+    console.error(err);
+    res.render("404", { pageTitle: "Video not found" });
+  }
 };
-export const postEdit = (req, res) => {
-  const { id } = req.params;
-  const { title } = req.body;
 
-  res.redirect(`/videos/${id}`);
+export const postEdit = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description, hashtags } = req.body;
+    await Video.findByIdAndUpdate(id, {
+      title,
+      description,
+      hashtags: getHashtagArr(hashtags),
+    });
+    res.redirect(`/videos/${id}`);
+  } catch (err) {
+    console.error(err);
+    res.render("404", { pageTitle: "Video not found" });
+  }
 };
+
 export const getUpload = (req, res) => {
   return res.render("upload", { pageTitle: "Upload Video" });
 };
+
 export const postUpload = async (req, res) => {
   try {
     const { title, description, hashtags } = req.body;
