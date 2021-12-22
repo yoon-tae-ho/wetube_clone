@@ -8,4 +8,8 @@ block content
       each hashtag in video.hashtags 
         li=hashtag
     hr
-  a(href=`./${video.id}/edit`) Edit Video ➤
+  ul
+    li
+      a(href=`./${video.id}/edit`) Edit Video ➤
+    li
+      a(href=`./${video.id}/delete`) Delete Video ➤
