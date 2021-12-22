@@ -4,14 +4,30 @@ import Video from "../models/Video";
 
 export const home = async (req, res) => {
   try {
-    const videos = await Video.find({});
+    const videos = await Video.find({}).sort({ createdAt: "desc" });
     return res.render("home", { pageTitle: "Home", videos });
   } catch (err) {
     console.error(err);
   }
 };
 
-export const search = (req, res) => res.send("Search!");
+export const search = async (req, res) => {
+  try {
+    const { keyword } = req.query;
+    let videos = [];
+    if (keyword) {
+      videos = await Video.find({
+        title: {
+          $regex: new RegExp(keyword, "i"),
+        },
+      });
+    }
+    res.render("search", { pageTitle: "Search", videos });
+  } catch (err) {
+    console.error(err);
+    res.render("404", { pageTitle: "Video not found" });
+  }
+};
 
 // For videoRouters
 
