@@ -1,7 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import bodyParser from "body-parser";
-import globalRouter from "./routers/globalRouter";
+import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 
@@ -14,7 +14,7 @@ app.set("views", __dirname + "/views");
 app.use(logger);
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/", globalRouter);
+app.use("/", rootRouter);
 app.use("/users", userRouter);
 app.use("/videos", videoRouter);
 
