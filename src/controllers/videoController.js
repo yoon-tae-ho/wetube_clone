@@ -25,7 +25,7 @@ export const search = async (req, res) => {
     res.render("search", { pageTitle: "Search", videos });
   } catch (err) {
     console.error(err);
-    res.render("404", { pageTitle: "Video not found" });
+    res.status(404).render("404", { pageTitle: "Video not found" });
   }
 };
 
@@ -38,7 +38,7 @@ export const watchVideo = async (req, res) => {
     res.render("watch", { pageTitle: `${video.title}`, video });
   } catch (err) {
     console.error(err);
-    res.render("404", { pageTitle: "Video not found" });
+    res.status(404).render("404", { pageTitle: "Video not found" });
   }
 };
 
@@ -49,7 +49,7 @@ export const getEdit = async (req, res) => {
     res.render("edit", { pageTitle: `Editing: ${video.title}`, video });
   } catch (err) {
     console.error(err);
-    res.render("404", { pageTitle: "Video not found" });
+    res.status(404).render("404", { pageTitle: "Video not found" });
   }
 };
 
@@ -65,7 +65,7 @@ export const postEdit = async (req, res) => {
     res.redirect(`/videos/${id}`);
   } catch (err) {
     console.error(err);
-    res.render("404", { pageTitle: "Video not found" });
+    res.status(404).render("404", { pageTitle: "Video not found" });
   }
 };
 
@@ -98,7 +98,7 @@ export const deleteVideo = async (req, res) => {
     return res.redirect("/");
   } catch (err) {
     console.error(err);
-    res.render("404", { pageTitle: "Video not found" });
+    res.status(404).render("404", { pageTitle: "Video not found" });
   }
 };
 
