@@ -5,7 +5,7 @@ html(lang="ko")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet" href="https://unpkg.com/mvp.css")
-    title #{pageTitle} | Wetube
+    title #{pageTitle} | #{siteName}
   body 
     header 
       h1=pageTitle 
@@ -15,9 +15,18 @@ html(lang="ko")
             a(href="/") Home
           li 
             a(href="/search") Search
+          if loggedIn 
+            li 
+              a(href="logout") Logout
+            li 
+              a(href="/") Profile of #{loggedInUser.username}
+          else
+            li 
+              a(href="/join") Join
+            li 
+              a(href="/login") Login
           li 
-            a(href="/join") Join
-          block navList
+            a(href="/videos/upload") Upload
             
     main
       block content

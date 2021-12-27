@@ -52,6 +52,7 @@ export const postLogin = async (req, res) => {
         errorMessage: "An account with this username dose not exists.",
       });
     }
+
     // Password validation
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -60,8 +61,12 @@ export const postLogin = async (req, res) => {
         errorMessage: "Password does not correct.",
       });
     }
-    console.log("Log In WOW!!!!!!!!!");
-    return res.end();
+
+    // Login
+    req.session.loggedIn = true;
+    req.session.user = user;
+
+    return res.redirect("/");
   } catch (err) {
     console.error(err);
   }
