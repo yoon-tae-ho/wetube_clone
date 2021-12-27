@@ -1,5 +1,5 @@
 import mongoose, { STATES } from "mongoose";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 const SALT_ROUNDS = 5;
 
@@ -12,9 +12,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre("save", async function () {
-  console.log(this.password);
   this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
-  console.log(this.password);
 });
 
 const User = mongoose.model("User", userSchema);
