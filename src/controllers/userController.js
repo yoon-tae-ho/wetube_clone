@@ -164,8 +164,29 @@ export const getEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
 
-export const postEdit = (req, res) => {
-  return res.send("post edit data!");
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { name, email, username, location },
+  } = req;
+  // update DB
+  const updatedUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      email,
+      username,
+      location,
+    },
+    { new: true }
+  );
+  // update session
+  req.session.user = updatedUser;
+  // code challange
+  // email, username의 unique 검사
+  return res.redirect("/users/edit");
 };
 
 export const deleteUser = (req, res) => res.send("Delete User!");
