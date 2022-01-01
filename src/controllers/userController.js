@@ -160,6 +160,13 @@ export const logout = async (req, res) => {
   return res.redirect("/");
 };
 
-export const editUser = (req, res) => res.send("Edit User!");
+export const getEdit = (req, res) => {
+  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+};
+
+export const postEdit = (req, res) => {
+  return res.send("post edit data!");
+};
+
 export const deleteUser = (req, res) => res.send("Delete User!");
 export const seeUser = (req, res) => res.send("See user!");

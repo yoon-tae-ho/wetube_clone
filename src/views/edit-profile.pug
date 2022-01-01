@@ -1,0 +1,9 @@
+extends base.pug
+
+block content 
+  form(method="POST") 
+    input(type="text", placeholder="Name", required, value=loggedInUser.name)
+    input(type="email", placeholder="Email", required, value=loggedInUser.email)
+    input(type="text", placeholder="Username", required, value=loggedInUser.username)
+    input(type="text", placeholder="Location", required, value=loggedInUser.location)
+    input(type="submit", value="Edit")
