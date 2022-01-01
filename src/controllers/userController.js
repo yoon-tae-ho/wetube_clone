@@ -171,22 +171,76 @@ export const postEdit = async (req, res) => {
     },
     body: { name, email, username, location },
   } = req;
-  // update DB
-  const updatedUser = await User.findByIdAndUpdate(
-    _id,
-    {
-      name,
-      email,
-      username,
-      location,
+  try {
+    // update DB
+    const updatedUser = await User.findByIdAndUpdate(
+      _id,
+      {
+        name,
+        email,
+        username,
+        location,
+      },
+      { new: true }
+    );
+    // update session
+    req.session.user = updatedUser;
+    // code challange
+    // email, username의 unique 검사
+    return res.redirect("/users/edit");
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getChangePassword = (req, res) => {
+  if (req.session.user.socialOnly) {
+    return res.redirect("/users/edit");
+  }
+  return res.render("users/change-password", { pageTitle: "Change Password" });
+};
+
+export const postChangePassword = async (req, res) => {
+  const {
+    session: {
+      user: { _id, password },
     },
-    { new: true }
-  );
-  // update session
-  req.session.user = updatedUser;
-  // code challange
-  // email, username의 unique 검사
-  return res.redirect("/users/edit");
+    body: { oldPassword, newPassword, newPassword2 },
+  } = req;
+  try {
+    // old password confirmation
+    const isMatch = await bcrypt.compare(oldPassword, password);
+    if (!isMatch) {
+      return res.status(400).render("users/change-password", {
+        pageTitle: "Change Password",
+        errorMessage: "The old password dose not correct.",
+      });
+    }
+    // old and new password confirmation
+    if (oldPassword === newPassword) {
+      return res.status(400).render("users/change-password", {
+        pageTitle: "Change Password",
+        errorMessage:
+          "The new password must be different from the previous one.",
+      });
+    }
+    // new password confirmation
+    if (newPassword != newPassword2) {
+      return res.status(400).render("users/change-password", {
+        pageTitle: "Change Password",
+        errorMessage: "The new password confirmation dose not match.",
+      });
+    }
+    // change password in DB
+    const user = await User.findById(_id);
+    user.password = newPassword;
+    await user.save();
+    // reset session
+    req.session.destroy();
+    return res.redirect("/login");
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const deleteUser = (req, res) => res.send("Delete User!");
