@@ -245,5 +245,19 @@ export const postChangePassword = async (req, res) => {
   }
 };
 
+export const seeUser = async (req, res) => {
+  const {
+    params: { username },
+  } = req;
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).render("404", { pageTitle: "User not found." });
+    }
+    return res.render("users/profile", { pageTitle: username, user });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const deleteUser = (req, res) => res.send("Delete User!");
-export const seeUser = (req, res) => res.send("See user!");
