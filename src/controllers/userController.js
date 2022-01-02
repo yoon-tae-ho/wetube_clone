@@ -6,6 +6,7 @@ import fetch from "node-fetch";
 export const getJoin = (req, res) => {
   return res.render("join", { pageTitle: "Join" });
 };
+
 export const postJoin = async (req, res) => {
   try {
     const { name, email, password, password2, username, location } = req.body;
@@ -29,6 +30,7 @@ export const postJoin = async (req, res) => {
       password,
       username,
       location,
+      videos: [],
     });
     return res.redirect("/login");
   } catch (err) {
@@ -251,12 +253,11 @@ export const seeUser = async (req, res) => {
     params: { username },
   } = req;
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username }).populate("videos");
     if (!user) {
       return res.status(404).render("404", { pageTitle: "User not found." });
     }
-    const videos = await Video.find({ owner: user._id });
-    return res.render("users/profile", { pageTitle: username, videos });
+    return res.render("users/profile", { pageTitle: username, user });
   } catch (err) {
     console.error(err);
   }
