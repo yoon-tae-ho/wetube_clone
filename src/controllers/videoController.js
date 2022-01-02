@@ -147,7 +147,15 @@ export const deleteVideo = async (req, res) => {
     if (String(video.owner) !== String(_id)) {
       return res.status(403).redirect("/");
     }
+    // delete in videos collection of DB
     await video.deleteOne();
+    // delete in user.videos of DB
+    const user = await User.findById(_id);
+    const newVideos = user.videos.filter(
+      (videoId) => String(videoId) !== String(id)
+    );
+    user.videos = newVideos;
+    await user.save();
     return res.redirect("/");
   } catch (err) {
     console.error(err);
