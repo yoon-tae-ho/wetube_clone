@@ -1,7 +1,11 @@
 extends base.pug
 
 block content 
-  form(method="POST") 
+  if loggedInUser.avatarUrl 
+    img(src=loggedInUser.avatarUrl.startsWith("http") ? loggedInUser.avatarUrl : "/" + loggedInUser.avatarUrl, width="150", height="150")
+  form(method="POST", enctype="multipart/form-data") 
+    label(for="avatar") Choose a profile avatar: 
+    input(name="avatar", type="file", id="avatar", accept="image/*")
     input(name="name", type="text", placeholder="Name", required, value=loggedInUser.name)
     input(name="email", type="email", placeholder="Email", required, value=loggedInUser.email)
     input(name="username", type="text", placeholder="Username", required, value=loggedInUser.username)
