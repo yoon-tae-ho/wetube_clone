@@ -1,4 +1,5 @@
 import Video from "../models/Video";
+import User from "../models/User";
 
 // For globalRouters
 
@@ -34,7 +35,7 @@ export const search = async (req, res) => {
 export const watchVideo = async (req, res) => {
   try {
     const { id } = req.params;
-    const video = await Video.findById(id);
+    const video = await Video.findById(id).populate("owner");
     res.render("watch", { pageTitle: `${video.title}`, video });
   } catch (err) {
     console.error(err);
@@ -74,16 +75,20 @@ export const getUpload = (req, res) => {
 };
 
 export const postUpload = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { title, description, hashtags },
+    file: { path: fileUrl },
+  } = req;
   try {
-    const {
-      body: { title, description, hashtags },
-      file: { path: fileUrl },
-    } = req;
     await Video.create({
       fileUrl,
       title,
       description,
       hashtags: Video.formatHashtags(hashtags),
+      owner: _id,
     });
     return res.redirect("/");
   } catch (err) {

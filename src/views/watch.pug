@@ -5,12 +5,16 @@ block content
   div  
     p=video.description
     small=video.createdAt
+    br
+    small Uploaded by 
+      a(href=`/users/${video.owner.username}`)=video.owner.username
     ul 
       each hashtag in video.hashtags 
         li=hashtag
     hr
-  ul
-    li
-      a(href=`./${video.id}/edit`) Edit Video ➤
-    li
-      a(href=`./${video.id}/delete`) Delete Video ➤
+  if String(video.owner._id) === String(loggedInUser._id)
+    ul
+      li
+        a(href=`./${video.id}/edit`) Edit Video ➤
+      li
+        a(href=`./${video.id}/delete`) Delete Video ➤
