@@ -13,6 +13,7 @@ const logger = morgan("dev");
 app.set("view engine", "pug");
 app.set("views", __dirname + "/views");
 app.use("/uploads", express.static("uploads"));
+app.use("/static", express.static("assets"));
 
 // Middlewares
 app.use(logger);
