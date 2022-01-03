@@ -109,7 +109,7 @@ export const finishGithubLogin = async (req, res) => {
     if ("access_token" in tokenRequest) {
       const { access_token } = tokenRequest;
       const apiUrl = "https://api.github.com";
-
+      // get user data
       const userData = await (
         await fetch(`${apiUrl}/user`, {
           headers: {
@@ -117,7 +117,7 @@ export const finishGithubLogin = async (req, res) => {
           },
         })
       ).json();
-
+      // get email data
       const emailData = await (
         await fetch(`${apiUrl}/user/emails`, {
           headers: {
@@ -125,14 +125,13 @@ export const finishGithubLogin = async (req, res) => {
           },
         })
       ).json();
-
       const emailObj = emailData.find(
         (emailObj) => emailObj.primary && emailObj.verified
       );
       if (!emailObj) {
         return res.redirect("/login");
       }
-      console.log(userData);
+
       let user = await User.findOne({ email: emailObj.email });
       if (!user) {
         // create account
@@ -170,12 +169,28 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
   const {
     session: {
-      user: { _id, avatarUrl },
+      user: { _id, avatarUrl, email: sessionEmail, username: sessionUsername },
     },
     body: { name, email, username, location },
     file,
   } = req;
   try {
+    // check uniqueness of email
+    const isEmailChanged = email !== sessionEmail;
+    if (isEmailChanged) {
+      const isEmailMatch = await User.exists({ email });
+      if (isEmailMatch) {
+        return res.status(400).redirect("edit");
+      }
+    }
+    // check uniqueness of username
+    const isUsernameChanged = username !== sessionUsername;
+    if (isUsernameChanged) {
+      const isUsernameMatch = await User.exists({ username });
+      if (isUsernameMatch) {
+        return res.status(400).redirect("edit");
+      }
+    }
     // update DB
     const updatedUser = await User.findByIdAndUpdate(
       _id,
@@ -190,8 +205,6 @@ export const postEdit = async (req, res) => {
     );
     // update session
     req.session.user = updatedUser;
-    // code challange
-    // email, username의 unique 검사
     return res.redirect("/users/edit");
   } catch (err) {
     console.error(err);
