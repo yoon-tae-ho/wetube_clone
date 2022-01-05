@@ -2,6 +2,14 @@ extends ../base.pug
 include ../mixins/video.pug
 
 block content 
-  h1 Hello 
-  each video in user.videos
-    +video(video)
+  div.profile__data
+    if loggedInUser.avatarUrl && loggedInUser.avatarUrl !== ""
+      img.profile__avatar(src=loggedInUser.avatarUrl.startsWith("http") ? loggedInUser.avatarUrl : "/" + loggedInUser.avatarUrl)
+    else 
+      img.profile__avatar(src=alternativeAvatarUrl)
+    h3=user.username
+  div.video-grid
+    each video in user.videos
+      +video(video)
+    else
+      li.empty__message No videos found.

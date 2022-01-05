@@ -1,6 +1,8 @@
 mixin video(videoObj)
-  div
-      a(href=`/videos/${videoObj.id}`)=videoObj.title
-      p=videoObj.description 
-      small=videoObj.createdAt
-      hr
+  a(href=`/videos/${videoObj.id}`).video-mixin
+    div.video-mixin__thumb
+    div.video-mixin__data
+      span.video-mixin__title=videoObj.title
+      div.video-mixin__meta
+        span #{videoObj.owner.username}
+        span #{videoObj.meta.views} 회

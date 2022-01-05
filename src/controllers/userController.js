@@ -266,7 +266,13 @@ export const seeUser = async (req, res) => {
     params: { username },
   } = req;
   try {
-    const user = await User.findOne({ username }).populate("videos");
+    const user = await User.findOne({ username }).populate({
+      path: "videos",
+      populate: {
+        path: "owner",
+        model: "User",
+      },
+    });
     if (!user) {
       return res.status(404).render("404", { pageTitle: "User not found." });
     }
