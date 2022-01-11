@@ -1,19 +1,29 @@
 const video = document.querySelector("video");
 const playBtn = document.querySelector("#play");
+const playIcon = playBtn.querySelector(".playIcon");
+const pauseIcon = playBtn.querySelector(".pauseIcon");
 const muteBtn = document.querySelector("#mute");
+const muteIcon = muteBtn.querySelector(".muteIcon");
+const unMuteIcon = muteBtn.querySelector(".unMuteIcon");
 const volumeRange = document.querySelector("#volume");
 const currentTime = document.querySelector("#currentTime");
 const totalTime = document.querySelector("#totalTime");
 const timeline = document.querySelector("#timeline");
 const fullscreenBtn = document.querySelector("#fullscreen");
+const expandIcon = fullscreenBtn.querySelector(".expandIcon");
+const compressIcon = fullscreenBtn.querySelector(".compressIcon");
 const videoContainer = document.querySelector("#videoContainer");
 const videoControls = document.querySelector("#videoControls");
 
 const SHOWING_CN = "showing";
+const HIDDEN_CN = "hidden";
 let timeoutId = null;
 
 // initial settings
 volumeRange.value = video.volume;
+pauseIcon.classList.add(HIDDEN_CN);
+muteIcon.classList.add(HIDDEN_CN);
+compressIcon.classList.add(HIDDEN_CN);
 
 const handlePlayClick = () => {
   if (video.paused) {
@@ -109,6 +119,14 @@ const handleMouseLeave = () => {
   hideControls();
 };
 
+const handleEnded = () => {
+  const { videoId } = videoContainer.dataset;
+  console.log(videoId);
+  fetch(`/api/videos/${videoId}/view`, {
+    method: "POST",
+  });
+};
+
 playBtn.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMuteClick);
 volumeRange.addEventListener("input", handleVolumeChange);
@@ -118,3 +136,4 @@ timeline.addEventListener("input", handleTimelineChange);
 fullscreenBtn.addEventListener("click", handleFullscreenClick);
 video.addEventListener("mousemove", handleMouseMove);
 video.addEventListener("mouseleave", handleMouseLeave);
+video.addEventListener("ended", handleEnded);
