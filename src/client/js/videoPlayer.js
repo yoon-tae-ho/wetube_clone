@@ -38,6 +38,13 @@ const handlePlayClick = () => {
   }
 };
 
+const handleVideoClick = (event) => {
+  const target = event.target;
+  if (target === videoContainer || target === video) {
+    handlePlayClick();
+  }
+};
+
 const handleMuteClick = () => {
   if (video.muted) {
     video.muted = false;
@@ -141,6 +148,7 @@ const handleEnded = () => {
 };
 
 playBtn.addEventListener("click", handlePlayClick);
+videoContainer.addEventListener("click", handleVideoClick);
 muteBtn.addEventListener("click", handleMuteClick);
 volumeRange.addEventListener("input", handleVolumeChange);
 video.addEventListener("loadedmetadata", handleTotalTime);
