@@ -1,0 +1,67 @@
+#videoContainer {
+  position: relative;
+  width: 640px;
+  display: flex;
+  align-items: center;
+
+  video {
+    width: 100%;
+  }
+
+  .videoBottom {
+    position: absolute;
+    bottom: 10px;
+    // align center
+    left: 50%;
+    transform: translateX(-50%);
+    width: 98%;
+    display: none;
+
+    #timeline {
+      width: 100%;
+    }
+
+    .videoControls {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: $white;
+
+      .videoLeftControls,
+      .videoRightControls {
+        display: flex;
+        align-items: center;
+
+        button {
+          width: 44px;
+          height: 48px;
+          padding: 0 2px;
+          border: none;
+          background-color: transparent;
+          color: inherit;
+
+          i {
+            width: 100%;
+            height: 100%;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          .hidden {
+            display: none;
+          }
+        }
+
+        #volume {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+
+  .showing {
+    display: block;
+  }
+}
