@@ -147,6 +147,12 @@ const handleEnded = () => {
   });
 };
 
+const handleSpaceDown = (event) => {
+  if (event.code === "Space") {
+    handlePlayClick();
+  }
+};
+
 playBtn.addEventListener("click", handlePlayClick);
 videoContainer.addEventListener("click", handleVideoClick);
 muteBtn.addEventListener("click", handleMuteClick);
@@ -158,3 +164,4 @@ fullscreenBtn.addEventListener("click", handleFullscreenClick);
 videoContainer.addEventListener("mousemove", handleMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
 video.addEventListener("ended", handleEnded);
+window.addEventListener("keydown", handleSpaceDown);
