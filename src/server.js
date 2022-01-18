@@ -1,6 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import bodyParser from "body-parser";
+import flash from "express-flash";
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
@@ -20,6 +21,7 @@ app.use("/static", express.static("assets"));
 app.use(logger);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(sessionMiddleware);
+app.use(flash());
 app.use(localsMiddleware);
 
 // Routes

@@ -1,3 +1,5 @@
+include mixins/flash.pug
+
 doctype html
 html(lang="ko")
   head
@@ -10,6 +12,8 @@ html(lang="ko")
     block scripts
     title #{pageTitle} | #{siteName}
   body 
+    if messages.error 
+      +flash("error", messages.error)
     include partials/header.pug     
     main
       block content
