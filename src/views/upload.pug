@@ -1,6 +1,11 @@
 extends base.pug
 
+block scripts 
+  script(src="/static/js/recorder.js", defer)
+
 block content 
+  video#preview(playsilnine, autoplay)
+  button#startBtn Start Recording
   if errorMessage 
     h3=errorMessage
   form(method="POST", enctype="multipart/form-data") 

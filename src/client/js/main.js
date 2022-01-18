@@ -1,3 +1,2 @@
 import "../scss/styles.scss";
-
-console.log("Hello from webpack!");
+import regeneratorRuntime from "regenerator-runtime";
