@@ -11,13 +11,17 @@ import { protectorMiddleware, videoUpload } from "../middelwares";
 
 const videoRouter = express.Router();
 
-videoRouter.get("/:id([0-9a-z]{24})", watchVideo);
+videoRouter.get(`/:id(${process.env.MONGO_RE_FORMAT})`, watchVideo);
 videoRouter
-  .route("/:id([0-9a-z]{24})/edit")
+  .route(`/:id(${process.env.MONGO_RE_FORMAT})/edit`)
   .all(protectorMiddleware)
   .get(getEdit)
   .post(postEdit);
-videoRouter.get("/:id([0-9a-z]{24})/delete", protectorMiddleware, deleteVideo);
+videoRouter.get(
+  `/:id(${process.env.MONGO_RE_FORMAT})/delete`,
+  protectorMiddleware,
+  deleteVideo
+);
 videoRouter
   .route("/upload")
   .all(protectorMiddleware)

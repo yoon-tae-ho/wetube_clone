@@ -2,6 +2,8 @@ extends base.pug
 
 block scripts
   script(src="/static/js/videoPlayer.js", defer)
+  if loggedIn 
+    script(src="/static/js/commentSection.js", defer)
 
 block content 
   div#videoContainer(data-video-id=video.id)
@@ -43,3 +45,18 @@ block content
   //-       a(href=`./${video.id}/edit`) Edit Video ➤
   //-     li
   //-       a(href=`./${video.id}/delete`) Delete Video ➤
+  
+  if loggedIn
+    div.video__add-comments
+      form.video__comment-form#commentForm
+        textarea(cols="30", rows="10", placeholder="Write your comment.", required)
+        button Add Comment
+
+  div.video__comments
+    ul 
+      each comment in video.comments
+        li.video__comment(data-comment-id=comment._id)
+          i.fas.fa-comment 
+          span  #{comment.text}
+          if String(comment.owner) === String(loggedInUser._id)
+            span.video__comment--delete ❌
